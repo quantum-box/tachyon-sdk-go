@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"time"
 
 	tachyoncms "github.com/quantum-box/tachyon-sdk-go/service/cms"
@@ -30,7 +31,12 @@ type ContentRepository interface {
 var _ ContentRepository = &ContentRepositoryImpl{}
 
 type ContentRepositoryImpl struct {
-	cms TachyonCmsDriver
+	cms             TachyonCmsDriver
+	aggregationName string
+}
+
+func NewContentRepositoryImpl(in TachyonCmsDriver, aggregationName string) *ContentRepositoryImpl {
+	return &ContentRepositoryImpl{in, aggregationName}
 }
 
 type TachyonCmsDriver interface {
@@ -53,4 +59,19 @@ func (*ContentRepositoryImpl) FindAll() ([]*ContentEntity, error) {
 
 func (*ContentRepositoryImpl) into(in *tachyoncms.AggregateDto) *ContentEntity {
 	return New(in.ID, in.CreatedAt, in.UpdatedAt, in.Data)
+}
+
+// entrypoint
+func main() {
+	cmsClient, err := tachyoncms.NewCmsClient()
+	if err != nil {
+		panic(err)
+	}
+	testRepo := NewContentRepositoryImpl(cmsClient, "test")
+	entity, err := testRepo.cms.GetById("01FK5DK219TR117F5KE96TSPN3")
+	if err != nil {
+		panic(err)
+	}
+    ou, _ := json.Marshal(entity)
+	println(string(ou))
 }

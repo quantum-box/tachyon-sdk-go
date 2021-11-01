@@ -3,14 +3,17 @@ package tachyoncms
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"log"
 	"time"
 
 	cmspb "github.com/quantum-box/tachyon-sdk-go/service/cms/proto"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/metadata"
 )
 
 type TachyonCmsDriver interface {
+	// TODO: aggregationname, context
 	GetById(id string) (*AggregateDto, error)
 	FindAll() ([]*AggregateDto, error)
 }
@@ -21,19 +24,24 @@ type Client struct {
 	connection cmspb.CmsApiClient
 }
 
-func NewCmsClient() *Client {
+func NewCmsClient() (*Client, error) {
 	cc := new(Client)
 	conn, err := grpc.Dial("localhost:50051", grpc.WithInsecure())
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)
+		return nil, fmt.Errorf("ConnectionFailureErr:%v", err)
 	}
-	defer conn.Close()
+	//defer conn.Close()
 	cc.connection = cmspb.NewCmsApiClient(conn)
-	return cc
+	return cc, nil
 }
 
 func (c *Client) GetById(id string) (*AggregateDto, error) {
-	res, err := c.connection.GetById(context.Background(), &cmspb.GetRequest{
+	// TODO: token
+	md := metadata.New(map[string]string{"authorization": "Bearer some-auth-token"})
+	ctx := metadata.NewOutgoingContext(context.Background(), md)
+
+	res, err := c.connection.GetById(ctx, &cmspb.GetRequest{
 		Id: id, AggregationName: "test"})
 	if err != nil {
 		return nil, err
