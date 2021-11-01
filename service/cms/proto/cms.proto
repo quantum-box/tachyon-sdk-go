@@ -1,0 +1,68 @@
+syntax = "proto3";
+package cms;
+
+option go_package = "github.com/quantum-box/tachyon-go-sdk/service/cms/cmspb";
+
+
+service CmsApi {
+  rpc GetById (GetRequest) returns (GetResponse);
+  rpc FindAll (FindRequest) returns (FindResponse);
+
+  rpc Create (CreateRequest) returns (CreateResponse);
+  rpc Update (UpdateRequest) returns (UpdateResponse);
+}
+
+service QueryApi {
+  rpc QueryById (QueryRequest) returns (QueryResponse);
+}
+
+message GetRequest {
+  string id = 1;
+  string aggregationName = 2;
+}
+
+message GetResponse {
+  string aggregationName = 1;
+  optional ContentEntity entity = 2;
+}
+
+message FindRequest {
+  string aggregationName = 1;
+}
+
+message FindResponse {
+  repeated ContentEntity entities = 1;
+}
+
+message CreateRequest {
+  ContentEntity entity = 1;
+}
+
+message CreateResponse {
+  string id = 1;
+}
+
+message UpdateRequest {
+  ContentEntity entity = 1;
+}
+
+message UpdateResponse {
+  string id = 1;
+}
+
+message QueryRequest {
+  bytes queryString = 1;
+}
+
+message QueryResponse {
+  repeated ContentEntity entities = 1;
+}
+
+message ContentEntity {
+  string id = 1;
+  string createdAt = 2;
+  string updatedAt = 3;
+  optional string deletedAt = 4;
+  bytes data = 5;
+}
+

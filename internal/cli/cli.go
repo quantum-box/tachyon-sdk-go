@@ -1,8 +1,9 @@
-package main
+package cli
 
 import (
 	"flag"
 	"fmt"
+	tachyon "github.com/quantum-box/tachyon-sdk-go"
 	"io"
 )
 
@@ -15,9 +16,17 @@ type CLI struct {
 	outStream, errStream io.Writer
 }
 
+func New(outStream, errStream io.Writer) *CLI {
+	return &CLI{
+		outStream: outStream,
+		errStream: errStream,
+	}
+}
+
 func (c *CLI) Run(args []string) int {
+    fmt.Println(args)
 	var version bool
-	flags := flag.NewFlagSet("cms-cli", flag.ContinueOnError)
+	flags := flag.NewFlagSet("cms", flag.ContinueOnError)
 	flags.SetOutput(c.errStream)
 	flags.BoolVar(&version, "version", false, "Print version information and quit")
 
@@ -26,7 +35,7 @@ func (c *CLI) Run(args []string) int {
 	}
 
 	if version {
-		fmt.Fprintf(c.errStream, "cms-cli version %s", Version)
+		fmt.Fprintf(c.errStream, "cms-cli version %s", tachyon.Version)
 		return ExitCodeOK
 	}
 	fmt.Fprintf(c.outStream, "Do cms work")
