@@ -19,27 +19,27 @@ func (c *Client) GetById(ctx context.Context, id string) (*AggregateDto, error) 
 }
 
 func fromGetResponse(in *cmspb.GetResponse) (*AggregateDto, error) {
-	createdAt, err := time.Parse(time.RFC3339, in.Entity.CreatedAt)
+	createdAt, err := time.Parse(time.RFC3339, in.RawContent.CreatedAt)
 	if err != nil {
 		return nil, err
 	}
-	updatedAt, err := time.Parse(time.RFC3339, in.Entity.UpdatedAt)
+	updatedAt, err := time.Parse(time.RFC3339, in.RawContent.UpdatedAt)
 	if err != nil {
 		return nil, err
 	}
 	var deletedAt *time.Time
-	if in.Entity.DeletedAt != nil {
-		*deletedAt, err = time.Parse(time.RFC3339, *in.Entity.DeletedAt)
+	if in.RawContent.DeletedAt != nil {
+		*deletedAt, err = time.Parse(time.RFC3339, *in.RawContent.DeletedAt)
 		if err != nil {
 			return nil, err
 		}
 	}
 	var contentData map[string]interface{}
-	if err = json.Unmarshal(in.Entity.Data, &contentData); err != nil {
+	if err = json.Unmarshal(in.RawContent.Data, &contentData); err != nil {
 		return nil, err
 	}
 	return &AggregateDto{
-		ID:        in.Entity.Id,
+		ID:        in.RawContent.Id,
 		CreatedAt: createdAt,
 		UpdatedAt: updatedAt,
 		DeletedAt: deletedAt,

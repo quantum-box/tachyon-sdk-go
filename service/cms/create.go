@@ -32,8 +32,8 @@ func fromAggregateDto(in *AggregateDto) (*cmspb.CreateRequest, error) {
 		return nil, err
 	}
 	return &cmspb.CreateRequest{
-        AggregationName: "test",
-		Entity: &cmspb.RawContent{
+		AggregationName: "test",
+		RawContent: &cmspb.RawContent{
 			Id:        in.ID,
 			CreatedAt: in.CreatedAt.Format(time.RFC3339),
 			UpdatedAt: in.UpdatedAt.Format(time.RFC3339),
