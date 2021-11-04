@@ -3,7 +3,6 @@ package cms;
 
 option go_package = "github.com/quantum-box/tachyon-go-sdk/service/cms/cmspb";
 
-
 service CmsApi {
   rpc GetById (GetRequest) returns (GetResponse);
   rpc FindAll (FindRequest) returns (FindResponse);
@@ -35,7 +34,8 @@ message FindResponse {
 }
 
 message CreateRequest {
-  RawContent entity = 1;
+  string aggregationName = 1;
+  RawContent entity = 2;
 }
 
 message CreateResponse {
