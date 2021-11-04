@@ -23,7 +23,7 @@ message GetRequest {
 
 message GetResponse {
   string aggregationName = 1;
-  optional ContentEntity entity = 2;
+  optional RawContent entity = 2;
 }
 
 message FindRequest {
@@ -31,11 +31,11 @@ message FindRequest {
 }
 
 message FindResponse {
-  repeated ContentEntity entities = 1;
+  repeated RawContent entities = 1;
 }
 
 message CreateRequest {
-  ContentEntity entity = 1;
+  RawContent entity = 1;
 }
 
 message CreateResponse {
@@ -43,7 +43,7 @@ message CreateResponse {
 }
 
 message UpdateRequest {
-  ContentEntity entity = 1;
+  RawContent entity = 1;
 }
 
 message UpdateResponse {
@@ -55,10 +55,10 @@ message QueryRequest {
 }
 
 message QueryResponse {
-  repeated ContentEntity entities = 1;
+  repeated RawContent entities = 1;
 }
 
-message ContentEntity {
+message RawContent {
   string id = 1;
   string createdAt = 2;
   string updatedAt = 3;

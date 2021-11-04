@@ -14,8 +14,8 @@ import (
 
 type TachyonCmsDriver interface {
 	// TODO: aggregationname, context
-	GetById(id string) (*AggregateDto, error)
-	FindAll() ([]*AggregateDto, error)
+	GetById(ctx context.Context, id string) (*AggregateDto, error)
+	FindAll(ctx context.Context) ([]*AggregateDto, error)
 }
 
 var _ TachyonCmsDriver = &Client{}
@@ -36,10 +36,10 @@ func NewCmsClient() (*Client, error) {
 	return cc, nil
 }
 
-func (c *Client) GetById(id string) (*AggregateDto, error) {
+func (c *Client) GetById(ctx context.Context, id string) (*AggregateDto, error) {
 	// TODO: token
 	md := metadata.New(map[string]string{"authorization": "Bearer some-auth-token"})
-	ctx := metadata.NewOutgoingContext(context.Background(), md)
+	ctx = metadata.NewOutgoingContext(context.Background(), md)
 
 	res, err := c.connection.GetById(ctx, &cmspb.GetRequest{
 		Id: id, AggregationName: "test"})
@@ -49,7 +49,7 @@ func (c *Client) GetById(id string) (*AggregateDto, error) {
 	return c.from(res)
 }
 
-func (c *Client) FindAll() ([]*AggregateDto, error) {
+func (c *Client) FindAll(ctx context.Context) ([]*AggregateDto, error) {
 	panic("not implemented")
 }
 
