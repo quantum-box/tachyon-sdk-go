@@ -15,6 +15,8 @@ type TachyonCmsDriver interface {
 	FindAll(ctx context.Context) ([]*AggregateDto, error)
 
 	Create(ctx context.Context, in *AggregateDto) error
+	Update(ctx context.Context, in *AggregateDto, aggregationName string) error
+	Delete(ctx context.Context, id, aggregationName string) error
 }
 
 var _ TachyonCmsDriver = &Client{}
