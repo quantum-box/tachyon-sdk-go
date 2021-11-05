@@ -94,10 +94,13 @@ func (*ContentRepositoryImpl) into(in *tachyoncms.AggregateDto) *TestEntity {
 //
 func main() {
 	ctx := context.Background()
+
+    // craete cms sdk client
 	cmsClient, err := tachyoncms.NewCmsClient()
 	if err != nil {
 		panic(err)
 	}
+
 	testRepo := NewContentRepositoryImpl(cmsClient, "test")
 	entity, err := testRepo.GetById(ctx, "01FKNB2BK5JA8M37586Z8673AG")
 	if err != nil {

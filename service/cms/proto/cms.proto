@@ -15,8 +15,8 @@ service QueryApi {
 }
 
 message GetRequest {
-  string id = 1;
-  string aggregationName = 2;
+  string aggregationName = 1;
+  string id = 2;
 }
 
 message GetResponse {
@@ -42,7 +42,8 @@ message CreateResponse {
 }
 
 message UpdateRequest {
-  RawContent rawContent = 1;
+  string aggregationName = 1;
+  RawContent rawContent = 2;
 }
 
 message UpdateResponse {
@@ -50,7 +51,8 @@ message UpdateResponse {
 }
 
 message QueryRequest {
-  bytes queryString = 1;
+  string aggregationName = 1;
+  bytes queryString = 2;
 }
 
 message QueryResponse {
