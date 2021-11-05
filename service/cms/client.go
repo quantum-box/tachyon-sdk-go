@@ -12,7 +12,7 @@ import (
 type TachyonCmsDriver interface {
 	// TODO: aggregationname, context
 	GetById(ctx context.Context, id string) (*AggregateDto, error)
-	FindAll(ctx context.Context) ([]*AggregateDto, error)
+	FindAll(ctx context.Context, aggregationName string) ([]*AggregateDto, error)
 
 	Create(ctx context.Context, in *AggregateDto) error
 	Update(ctx context.Context, in *AggregateDto, aggregationName string) error
