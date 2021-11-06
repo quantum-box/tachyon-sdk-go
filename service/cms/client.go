@@ -15,9 +15,9 @@ type TachyonCmsDriver interface {
 	FindAll(ctx context.Context, aggregationName string) ([]*AggregateDto, error)
 	FindByPath(ctx context.Context, aggregationName string, paths []string, value string) ([]*AggregateDto, error)
 
-	Create(ctx context.Context, in *AggregateDto) error
-	Update(ctx context.Context, in *AggregateDto, aggregationName string) error
-	Delete(ctx context.Context, id, aggregationName string) error
+	Create(ctx context.Context, aggregationName string, in *AggregateDto) error
+	Update(ctx context.Context, aggregationName string, in *AggregateDto) error
+	Delete(ctx context.Context, aggregationName, id string) error
 }
 
 var _ TachyonCmsDriver = &Client{}

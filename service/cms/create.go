@@ -8,12 +8,13 @@ import (
 	cmspb "github.com/quantum-box/tachyon-sdk-go/service/cms/proto"
 )
 
-func (c *Client) Create(ctx context.Context, in *AggregateDto) error {
+func (c *Client) Create(ctx context.Context, aggregationName string, in *AggregateDto) error {
 
 	req, err := fromAggregateDto(in)
 	if err != nil {
 		return err
 	}
+	req.AggregationName = aggregationName
 	_, err = c.connection.Create(ctx, req)
 	if err != nil {
 		return err
