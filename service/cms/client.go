@@ -11,7 +11,7 @@ import (
 
 type TachyonCmsDriver interface {
 	// TODO: aggregationname, context
-	GetById(ctx context.Context, id string) (*AggregateDto, error)
+	GetById(ctx context.Context, aggregationName, id string) (*AggregateDto, error)
 	FindAll(ctx context.Context, aggregationName string) ([]*AggregateDto, error)
 	FindByPath(ctx context.Context, aggregationName string, paths []string, value string) ([]*AggregateDto, error)
 

@@ -8,10 +8,10 @@ import (
 	cmspb "github.com/quantum-box/tachyon-sdk-go/service/cms/proto"
 )
 
-func (c *Client) GetById(ctx context.Context, id string) (*AggregateDto, error) {
+func (c *Client) GetById(ctx context.Context, aggregationName, id string) (*AggregateDto, error) {
 
 	res, err := c.connection.GetById(ctx, &cmspb.GetRequest{
-		Id: id, AggregationName: "test"})
+		Id: id, AggregationName: aggregationName})
 	if err != nil {
 		return nil, err
 	}

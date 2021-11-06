@@ -48,15 +48,15 @@ func NewContentRepositoryImpl(in TachyonCmsDriver, aggregationName string) *Cont
 }
 
 type TachyonCmsDriver interface {
-	GetById(ctx context.Context, id string) (*tachyoncms.AggregateDto, error)
-	FindAll(ctx context.Context) ([]*tachyoncms.AggregateDto, error)
+	GetById(ctx context.Context, aggregationName, id string) (*tachyoncms.AggregateDto, error)
+	FindAll(ctx context.Context, aggregationName string) ([]*tachyoncms.AggregateDto, error)
 
-	Create(ctx context.Context, in *tachyoncms.AggregateDto) error
+	Create(ctx context.Context, aggregationName string, in *tachyoncms.AggregateDto) error
 }
 
 func (r *ContentRepositoryImpl) GetById(ctx context.Context, id string) (*TestEntity, error) {
 	ctx = tachyoncms.WithAuth(ctx, "Bearer some-auth-token")
-	dto, err := r.cms.GetById(ctx, id)
+	dto, err := r.cms.GetById(ctx, "test", id)
 	if err != nil {
 		return nil, err
 	}
@@ -70,7 +70,7 @@ func (*ContentRepositoryImpl) FindAll(ctx context.Context) ([]*TestEntity, error
 
 func (r *ContentRepositoryImpl) Create(ctx context.Context, in *TestEntity) error {
 	ctx = tachyoncms.WithAuth(ctx, "Bearer some-auth-token")
-	if err := r.cms.Create(ctx, r.from(in)); err != nil {
+	if err := r.cms.Create(ctx, "test", r.from(in)); err != nil {
 		return err
 	}
 	return nil
@@ -95,14 +95,14 @@ func (*ContentRepositoryImpl) into(in *tachyoncms.AggregateDto) *TestEntity {
 func main() {
 	ctx := context.Background()
 
-    // craete cms sdk client
+	// craete cms sdk client
 	cmsClient, err := tachyoncms.NewCmsClient()
 	if err != nil {
 		panic(err)
 	}
 
 	testRepo := NewContentRepositoryImpl(cmsClient, "test")
-	entity, err := testRepo.GetById(ctx, "01FKNB2BK5JA8M37586Z8673AG")
+	entity, err := testRepo.GetById(ctx, "01FKNYSFQ4P7F8ETGR0ZGE9N6B")
 	if err != nil {
 		panic(err)
 	}
