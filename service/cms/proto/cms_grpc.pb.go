@@ -20,6 +20,7 @@ const _ = grpc.SupportPackageIsVersion7
 type CmsApiClient interface {
 	GetById(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetResponse, error)
 	FindAll(ctx context.Context, in *FindRequest, opts ...grpc.CallOption) (*FindResponse, error)
+	FindByPath(ctx context.Context, in *FindByPathRequest, opts ...grpc.CallOption) (*FindResponse, error)
 	Create(ctx context.Context, in *CreateRequest, opts ...grpc.CallOption) (*CreateResponse, error)
 	Update(ctx context.Context, in *UpdateRequest, opts ...grpc.CallOption) (*UpdateResponse, error)
 	Delete(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*DeleteResponse, error)
@@ -45,6 +46,15 @@ func (c *cmsApiClient) GetById(ctx context.Context, in *GetRequest, opts ...grpc
 func (c *cmsApiClient) FindAll(ctx context.Context, in *FindRequest, opts ...grpc.CallOption) (*FindResponse, error) {
 	out := new(FindResponse)
 	err := c.cc.Invoke(ctx, "/cms.CmsApi/FindAll", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *cmsApiClient) FindByPath(ctx context.Context, in *FindByPathRequest, opts ...grpc.CallOption) (*FindResponse, error) {
+	out := new(FindResponse)
+	err := c.cc.Invoke(ctx, "/cms.CmsApi/FindByPath", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -84,6 +94,7 @@ func (c *cmsApiClient) Delete(ctx context.Context, in *DeleteRequest, opts ...gr
 type CmsApiServer interface {
 	GetById(context.Context, *GetRequest) (*GetResponse, error)
 	FindAll(context.Context, *FindRequest) (*FindResponse, error)
+	FindByPath(context.Context, *FindByPathRequest) (*FindResponse, error)
 	Create(context.Context, *CreateRequest) (*CreateResponse, error)
 	Update(context.Context, *UpdateRequest) (*UpdateResponse, error)
 	Delete(context.Context, *DeleteRequest) (*DeleteResponse, error)
@@ -99,6 +110,9 @@ func (UnimplementedCmsApiServer) GetById(context.Context, *GetRequest) (*GetResp
 }
 func (UnimplementedCmsApiServer) FindAll(context.Context, *FindRequest) (*FindResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FindAll not implemented")
+}
+func (UnimplementedCmsApiServer) FindByPath(context.Context, *FindByPathRequest) (*FindResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FindByPath not implemented")
 }
 func (UnimplementedCmsApiServer) Create(context.Context, *CreateRequest) (*CreateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Create not implemented")
@@ -154,6 +168,24 @@ func _CmsApi_FindAll_Handler(srv interface{}, ctx context.Context, dec func(inte
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(CmsApiServer).FindAll(ctx, req.(*FindRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CmsApi_FindByPath_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FindByPathRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CmsApiServer).FindByPath(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/cms.CmsApi/FindByPath",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CmsApiServer).FindByPath(ctx, req.(*FindByPathRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -226,6 +258,10 @@ var CmsApi_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "FindAll",
 			Handler:    _CmsApi_FindAll_Handler,
+		},
+		{
+			MethodName: "FindByPath",
+			Handler:    _CmsApi_FindByPath_Handler,
 		},
 		{
 			MethodName: "Create",

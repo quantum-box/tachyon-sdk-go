@@ -6,6 +6,7 @@ option go_package = "github.com/quantum-box/tachyon-go-sdk/service/cms/cmspb";
 service CmsApi {
   rpc GetById (GetRequest) returns (GetResponse);
   rpc FindAll (FindRequest) returns (FindResponse);
+  rpc FindByPath (FindByPathRequest) returns (FindResponse);
 
   rpc Create (CreateRequest) returns (CreateResponse);
   rpc Update (UpdateRequest) returns (UpdateResponse);
@@ -28,6 +29,12 @@ message GetResponse {
 
 message FindRequest {
   string aggregationName = 1;
+}
+
+message FindByPathRequest {
+  string aggregationName = 1;
+  repeated string paths = 2;
+  string value = 3;
 }
 
 message FindResponse {
