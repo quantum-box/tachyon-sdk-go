@@ -4,10 +4,13 @@ import (
 	"context"
 	"fmt"
 	"math/rand"
+	"os"
 	"time"
 
 	"github.com/oklog/ulid"
+	"github.com/quantum-box/tachyon-sdk-go/internal/testhelper"
 	tachyoncms "github.com/quantum-box/tachyon-sdk-go/service/cms"
+	"github.com/quantum-box/tachyon-sdk-go/tachyon"
 )
 
 //
@@ -55,7 +58,7 @@ type TachyonCmsDriver interface {
 }
 
 func (r *ContentRepositoryImpl) GetById(ctx context.Context, id string) (*TestEntity, error) {
-	ctx = tachyoncms.WithAuth(ctx, "Bearer some-auth-token")
+	ctx = testhelper.NewContextWithToken()
 	dto, err := r.cms.GetById(ctx, "test", id)
 	if err != nil {
 		return nil, err
@@ -69,7 +72,7 @@ func (*ContentRepositoryImpl) FindAll(ctx context.Context) ([]*TestEntity, error
 }
 
 func (r *ContentRepositoryImpl) Create(ctx context.Context, in *TestEntity) error {
-	ctx = tachyoncms.WithAuth(ctx, "Bearer some-auth-token")
+	ctx = testhelper.NewContextWithToken()
 	if err := r.cms.Create(ctx, "test", r.from(in)); err != nil {
 		return err
 	}
@@ -95,8 +98,13 @@ func (*ContentRepositoryImpl) into(in *tachyoncms.AggregateDto) *TestEntity {
 func main() {
 	ctx := context.Background()
 
+	cfg := &tachyon.Config{
+		ProjectID: os.Getenv("TACHYON_PROJECT_ID"),
+		AppID:     os.Getenv("TACHYON_APP_ID"),
+	}
+
 	// craete cms sdk client
-	cmsClient, err := tachyoncms.NewCmsClient()
+	cmsClient, err := tachyoncms.NewCmsClient(cfg)
 	if err != nil {
 		panic(err)
 	}

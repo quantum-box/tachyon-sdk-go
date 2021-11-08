@@ -9,6 +9,10 @@ import (
 )
 
 func (c *Client) Update(ctx context.Context, aggregationName string, in *AggregateDto) error {
+	ctx, err := c.withConfig(ctx)
+	if err != nil {
+		return err
+	}
 	req, err := convUpdateRequest(in)
 	if err != nil {
 		return err

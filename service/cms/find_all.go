@@ -9,6 +9,10 @@ import (
 )
 
 func (c *Client) FindAll(ctx context.Context, aggregationName string) ([]*AggregateDto, error) {
+	ctx, err := c.withConfig(ctx)
+	if err != nil {
+		return nil, err
+	}
 	res, err := c.connection.FindAll(ctx, &cmspb.FindRequest{AggregationName: aggregationName})
 	if err != nil {
 		return nil, err

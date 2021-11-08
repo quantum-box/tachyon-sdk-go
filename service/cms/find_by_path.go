@@ -7,6 +7,10 @@ import (
 )
 
 func (c *Client) FindByPath(ctx context.Context, aggregationName string, paths []string, value string) ([]*AggregateDto, error) {
+	ctx, err := c.withConfig(ctx)
+	if err != nil {
+		return nil, err
+	}
 	res, err := c.connection.FindByPath(ctx, &cmspb.FindByPathRequest{
 		AggregationName: aggregationName,
 		Paths:           paths,
