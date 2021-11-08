@@ -10,6 +10,10 @@ import (
 
 func (c *Client) GetById(ctx context.Context, aggregationName, id string) (*AggregateDto, error) {
 
+	ctx, err := c.withConfig(ctx)
+	if err != nil {
+		return nil, err
+	}
 	res, err := c.connection.GetById(ctx, &cmspb.GetRequest{
 		Id: id, AggregationName: aggregationName})
 	if err != nil {

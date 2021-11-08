@@ -9,6 +9,10 @@ import (
 )
 
 func (c *Client) Create(ctx context.Context, aggregationName string, in *AggregateDto) error {
+	ctx, err := c.withConfig(ctx)
+	if err != nil {
+		return err
+	}
 
 	req, err := fromAggregateDto(in)
 	if err != nil {

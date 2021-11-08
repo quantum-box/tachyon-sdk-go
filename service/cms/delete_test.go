@@ -4,14 +4,18 @@ import (
 	"context"
 	"testing"
 
+	"github.com/quantum-box/tachyon-sdk-go/internal/testhelper"
 	cmspb "github.com/quantum-box/tachyon-sdk-go/service/cms/proto"
+	"github.com/quantum-box/tachyon-sdk-go/tachyon"
 )
 
 func TestClient_Delete(t *testing.T) {
-	conn, err := NewCmsClient()
+	conn, err := NewCmsClient(&tachyon.Config{
+		ProjectID: "01FKXKQTWW7HNYQ8D5PFXC693D", AppID: "01FKXKS0VVMZS86G1P7A5NNH5H"})
 	if err != nil {
 		t.Error(err)
 	}
+	ctx := testhelper.NewContextWithToken()
 	type fields struct {
 		connection cmspb.CmsApiClient
 	}
@@ -29,7 +33,7 @@ func TestClient_Delete(t *testing.T) {
 		{
 			name:    "integrate test",
 			fields:  fields{conn.connection},
-			args:    args{WithAuth(context.Background(), "Bearer some-auth-token"), "01FKQJ5P12J772SMB4EMC21YS9", "test"},
+			args:    args{ctx, "01FKQJ5P12J772SMB4EMC21YS9", "test"},
 			wantErr: false,
 		},
 	}

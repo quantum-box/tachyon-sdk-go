@@ -6,14 +6,17 @@ import (
 	"testing"
 	"time"
 
+	"github.com/quantum-box/tachyon-sdk-go/internal/testhelper"
 	cmspb "github.com/quantum-box/tachyon-sdk-go/service/cms/proto"
+	"github.com/quantum-box/tachyon-sdk-go/tachyon"
 )
 
 func TestClient_Update(t *testing.T) {
-	client, err := NewCmsClient()
+	client, err := NewCmsClient(&tachyon.Config{"01FKXKQTWW7HNYQ8D5PFXC693D", "01FKXKS0VVMZS86G1P7A5NNH5H"})
 	if err != nil {
 		t.Error(err)
 	}
+	ctx := testhelper.NewContextWithToken()
 	type fields struct {
 		connection cmspb.CmsApiClient
 	}
@@ -31,7 +34,7 @@ func TestClient_Update(t *testing.T) {
 		{
 			name:   "integration update test",
 			fields: fields{client.connection},
-			args: args{WithAuth(context.Background(), "Bearer some-auth-token"), &AggregateDto{
+			args: args{ctx, &AggregateDto{
 				ID:        "01FKNYSFQ4P7F8ETGR0ZGE9N6B",
 				CreatedAt: time.Now(),
 				UpdatedAt: time.Now(),
@@ -48,7 +51,7 @@ func TestClient_Update(t *testing.T) {
 			c := &Client{
 				connection: tt.fields.connection,
 			}
-			if err := c.Update(tt.args.ctx, tt.args.in, tt.args.aggregationName); (err != nil) != tt.wantErr {
+			if err := c.Update(tt.args.ctx, tt.args.aggregationName, tt.args.in); (err != nil) != tt.wantErr {
 				t.Errorf("Client.Update() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
@@ -70,7 +73,7 @@ func Test_convUpdateRequest(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := convUpdateRequest(tt.args.in, tt.args.aggregationName)
+			got, err := convUpdateRequest(tt.args.in)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("convUpdateRequest() error = %v, wantErr %v", err, tt.wantErr)
 				return

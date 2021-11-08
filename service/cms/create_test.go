@@ -6,21 +6,27 @@ import (
 	"time"
 
 	tachyonid "github.com/quantum-box/tachyon-sdk-go/internal/id"
+	"github.com/quantum-box/tachyon-sdk-go/internal/testhelper"
 	cmspb "github.com/quantum-box/tachyon-sdk-go/service/cms/proto"
+	"github.com/quantum-box/tachyon-sdk-go/tachyon"
 )
 
 func TestClient_Create(t *testing.T) {
-	conn, err := NewCmsClient()
+	conn, err := NewCmsClient(&tachyon.Config{
+		ProjectID: "01FKXKQTWW7HNYQ8D5PFXC693D", AppID: "01FKXKS0VVMZS86G1P7A5NNH5H"})
 	if err != nil {
 		t.Error(err)
 	}
+	ctx := testhelper.NewContextWithToken()
 
 	type fields struct {
 		connection cmspb.CmsApiClient
+		config     *tachyon.Config
 	}
 	type args struct {
-		ctx context.Context
-		in  *AggregateDto
+		ctx             context.Context
+		aggregationName string
+		in              *AggregateDto
 	}
 	tests := []struct {
 		name    string
@@ -31,8 +37,8 @@ func TestClient_Create(t *testing.T) {
 		{
 			// cms-service connection required
 			name:   "integrate test",
-			fields: fields{conn.connection},
-			args: args{WithAuth(context.Background(), "Bearer some-auth-token"), &AggregateDto{
+			fields: fields{conn.connection, conn.config},
+			args: args{ctx, "test", &AggregateDto{
 				ID:        tachyonid.NewUlID(),
 				CreatedAt: time.Now(),
 				UpdatedAt: time.Now(),
@@ -48,8 +54,9 @@ func TestClient_Create(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			c := &Client{
 				connection: tt.fields.connection,
+				config:     tt.fields.config,
 			}
-			if err := c.Create(tt.args.ctx, tt.args.in); (err != nil) != tt.wantErr {
+			if err := c.Create(tt.args.ctx, tt.args.aggregationName, tt.args.in); (err != nil) != tt.wantErr {
 				t.Errorf("Client.Create() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
