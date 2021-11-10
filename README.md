@@ -15,3 +15,13 @@ type TachyonCmsDriver interface {
 	Delete(ctx context.Context, aggregationName, id string) error
 }
 ```
+
+```go
+type AggregateDto struct {
+	ID        string
+	CreatedAt time.Time
+	UpdatedAt time.Time
+	DeletedAt *time.Time
+	Data      map[string]interface{}
+}
+```
