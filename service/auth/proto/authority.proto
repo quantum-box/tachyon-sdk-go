@@ -1,0 +1,16 @@
+syntax = "proto3";
+package authority;
+
+option go_package = "github.com/quantum-box/tachyon-go-sdk/service/auth/authpb";
+
+service AuthorityApi {
+  rpc VerifyToken (AuthorizeTokenRequest) returns (AuthorizeTokenResponse);
+}
+
+message AuthorizeTokenRequest {
+  string token = 1;
+}
+
+message AuthorizeTokenResponse {
+  string message = 1;
+}
