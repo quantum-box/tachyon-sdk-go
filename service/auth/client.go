@@ -40,7 +40,7 @@ func NewCmsClient(config *tachyon.Config) (*Client, error) {
 }
 
 func newConnnection() (*grpc.ClientConn, error) {
-	endpoint := os.Getenv("TACHYON_CMS_ENDPOINT")
+	endpoint := os.Getenv("TACHYON_AUTHORITY_ENDPOINT")
 	if endpoint == "" {
 		endpoint = "localhost:50052"
 	}
