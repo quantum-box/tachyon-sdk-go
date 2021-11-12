@@ -52,6 +52,13 @@ func TestClient_Verify(t *testing.T) {
 			},
 			wantErr: true,
 		},
+		{
+			name:     "unittest failure token is empty",
+			fields:   fields{mockClient, &tachyon.Config{}},
+			args:     args{ctx, ""},
+			mockFunc: func() {},
+			wantErr:  true,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

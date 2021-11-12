@@ -24,7 +24,7 @@ type Client struct {
 	config     *tachyon.Config
 }
 
-func NewCmsClient(config *tachyon.Config) (*Client, error) {
+func New(config *tachyon.Config) (*Client, error) {
 	cc := new(Client)
 	//defer conn.Close()
 	conn, err := newConnnection()
