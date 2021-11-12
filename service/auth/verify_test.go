@@ -73,3 +73,14 @@ func TestClient_Verify(t *testing.T) {
 		})
 	}
 }
+
+func TestClient_Integrate_Verify(t *testing.T) {
+	ctx := context.Background()
+	client, err := New(&tachyon.Config{ProjectID: "01FMA6PYVPHGD4525PC9NVNAZ4", AppID: "01FMA6QCWR4WN0E7ZMEFG1JY8N"})
+	if err != nil {
+		t.Error(err)
+	}
+	if err := client.Verify(ctx, "some-token"); err != nil {
+		t.Error(err)
+	}
+}
