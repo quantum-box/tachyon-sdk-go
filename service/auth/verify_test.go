@@ -2,6 +2,7 @@ package tachyonauth
 
 import (
 	"context"
+	"errors"
 	"testing"
 
 	"github.com/golang/mock/gomock"
@@ -39,6 +40,17 @@ func TestClient_Verify(t *testing.T) {
 				}).Return(nil, nil)
 			},
 			wantErr: false,
+		},
+		{
+			name:   "unittest failure",
+			fields: fields{mockClient, &tachyon.Config{}},
+			args:   args{ctx, "failure"},
+			mockFunc: func() {
+				mockClient.EXPECT().VerifyToken(ctx, &authpb.AuthorizeTokenRequest{
+					Token: "failure",
+				}).Return(nil, errors.New("not authorized"))
+			},
+			wantErr: true,
 		},
 	}
 	for _, tt := range tests {
