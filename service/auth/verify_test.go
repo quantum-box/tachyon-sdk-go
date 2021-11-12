@@ -13,6 +13,7 @@ import (
 func TestClient_Verify(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	mockClient := mock_authpb.NewMockAuthorityApiClient(ctrl)
+	ctx := context.Background()
 	type fields struct {
 		connection authpb.AuthorityApiClient
 		config     *tachyon.Config
@@ -22,20 +23,27 @@ func TestClient_Verify(t *testing.T) {
 		token string
 	}
 	tests := []struct {
-		name    string
-		fields  fields
-		args    args
-		wantErr bool
+		name     string
+		fields   fields
+		args     args
+		mockFunc func()
+		wantErr  bool
 	}{
 		{
-			name:    "unittest success",
-			fields:  fields{mockClient, &tachyon.Config{}},
-			args:    args{context.Background(), ""},
+			name:   "unittest success",
+			fields: fields{mockClient, &tachyon.Config{}},
+			args:   args{ctx, "some-token"},
+			mockFunc: func() {
+				mockClient.EXPECT().VerifyToken(ctx, &authpb.AuthorizeTokenRequest{
+					Token: "some-token",
+				}).Return(nil, nil)
+			},
 			wantErr: false,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			tt.mockFunc()
 			c := &Client{
 				connection: tt.fields.connection,
 				config:     tt.fields.config,
