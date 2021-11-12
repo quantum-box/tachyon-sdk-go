@@ -8,7 +8,7 @@ import (
 	"os"
 
 	authpb "github.com/quantum-box/tachyon-sdk-go/service/auth/proto"
-	"github.com/quantum-box/tachyon-sdk-go/tachyon"
+	"github.com/quantum-box/tachyon-sdk-go/tachyon/config"
 	"google.golang.org/grpc"
 )
 
@@ -21,10 +21,10 @@ var _ TachyonAuthorityDriver = &Client{}
 
 type Client struct {
 	connection authpb.AuthorityApiClient
-	config     *tachyon.Config
+	config     *config.Config
 }
 
-func New(config *tachyon.Config) (*Client, error) {
+func New(config *config.Config) (*Client, error) {
 	cc := new(Client)
 	//defer conn.Close()
 	conn, err := newConnnection()

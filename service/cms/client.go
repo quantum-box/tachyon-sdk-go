@@ -9,7 +9,7 @@ import (
 
 	myContext "github.com/quantum-box/tachyon-sdk-go/internal/context"
 	cmspb "github.com/quantum-box/tachyon-sdk-go/service/cms/proto"
-	"github.com/quantum-box/tachyon-sdk-go/tachyon"
+	"github.com/quantum-box/tachyon-sdk-go/tachyon/config"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
 )
@@ -28,10 +28,10 @@ var _ TachyonCmsDriver = &Client{}
 
 type Client struct {
 	connection cmspb.CmsApiClient
-	config     *tachyon.Config
+	config     *config.Config
 }
 
-func NewCmsClient(config *tachyon.Config) (*Client, error) {
+func NewCmsClient(config *config.Config) (*Client, error) {
 	cc := new(Client)
 	//defer conn.Close()
 	conn, err := newConnnection()

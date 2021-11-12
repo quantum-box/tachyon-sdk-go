@@ -1,4 +1,4 @@
-package tachyon
+package config
 
 type Config struct {
 	// project id is ulid

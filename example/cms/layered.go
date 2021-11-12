@@ -10,7 +10,7 @@ import (
 	"github.com/oklog/ulid"
 	"github.com/quantum-box/tachyon-sdk-go/internal/testhelper"
 	tachyoncms "github.com/quantum-box/tachyon-sdk-go/service/cms"
-	"github.com/quantum-box/tachyon-sdk-go/tachyon"
+	"github.com/quantum-box/tachyon-sdk-go/tachyon/config"
 )
 
 //
@@ -98,7 +98,7 @@ func (*ContentRepositoryImpl) into(in *tachyoncms.AggregateDto) *TestEntity {
 func main() {
 	ctx := context.Background()
 
-	cfg := &tachyon.Config{
+	cfg := &config.Config{
 		ProjectID: os.Getenv("TACHYON_PROJECT_ID"),
 		AppID:     os.Getenv("TACHYON_APP_ID"),
 	}

@@ -8,7 +8,7 @@ import (
 	"github.com/golang/mock/gomock"
 	authpb "github.com/quantum-box/tachyon-sdk-go/service/auth/proto"
 	mock_authpb "github.com/quantum-box/tachyon-sdk-go/service/auth/proto/mock_authority_grpc"
-	"github.com/quantum-box/tachyon-sdk-go/tachyon"
+	"github.com/quantum-box/tachyon-sdk-go/tachyon/config"
 )
 
 func TestClient_Verify(t *testing.T) {
@@ -17,7 +17,7 @@ func TestClient_Verify(t *testing.T) {
 	ctx := context.Background()
 	type fields struct {
 		connection authpb.AuthorityApiClient
-		config     *tachyon.Config
+		config     *config.Config
 	}
 	type args struct {
 		ctx   context.Context
@@ -32,7 +32,7 @@ func TestClient_Verify(t *testing.T) {
 	}{
 		{
 			name:   "unittest success",
-			fields: fields{mockClient, &tachyon.Config{}},
+			fields: fields{mockClient, &config.Config{}},
 			args:   args{ctx, "some-token"},
 			mockFunc: func() {
 				mockClient.EXPECT().VerifyToken(ctx, &authpb.AuthorizeTokenRequest{
@@ -43,7 +43,7 @@ func TestClient_Verify(t *testing.T) {
 		},
 		{
 			name:   "unittest failure",
-			fields: fields{mockClient, &tachyon.Config{}},
+			fields: fields{mockClient, &config.Config{}},
 			args:   args{ctx, "failure"},
 			mockFunc: func() {
 				mockClient.EXPECT().VerifyToken(ctx, &authpb.AuthorizeTokenRequest{
@@ -54,7 +54,7 @@ func TestClient_Verify(t *testing.T) {
 		},
 		{
 			name:     "unittest failure token is empty",
-			fields:   fields{mockClient, &tachyon.Config{}},
+			fields:   fields{mockClient, &config.Config{}},
 			args:     args{ctx, ""},
 			mockFunc: func() {},
 			wantErr:  true,
@@ -76,7 +76,7 @@ func TestClient_Verify(t *testing.T) {
 
 func TestClient_Integrate_Verify(t *testing.T) {
 	ctx := context.Background()
-	client, err := New(&tachyon.Config{ProjectID: "01FMA6PYVPHGD4525PC9NVNAZ4", AppID: "01FMA6QCWR4WN0E7ZMEFG1JY8N"})
+	client, err := New(&config.Config{ProjectID: "01FMA6PYVPHGD4525PC9NVNAZ4", AppID: "01FMA6QCWR4WN0E7ZMEFG1JY8N"})
 	if err != nil {
 		t.Error(err)
 	}

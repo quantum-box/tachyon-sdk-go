@@ -6,11 +6,11 @@ import (
 
 	"github.com/quantum-box/tachyon-sdk-go/internal/testhelper"
 	cmspb "github.com/quantum-box/tachyon-sdk-go/service/cms/proto"
-	"github.com/quantum-box/tachyon-sdk-go/tachyon"
+	"github.com/quantum-box/tachyon-sdk-go/tachyon/config"
 )
 
 func TestClient_Delete(t *testing.T) {
-	conn, err := NewCmsClient(&tachyon.Config{
+	conn, err := NewCmsClient(&config.Config{
 		ProjectID: "01FKXKQTWW7HNYQ8D5PFXC693D", AppID: "01FKXKS0VVMZS86G1P7A5NNH5H"})
 	if err != nil {
 		t.Error(err)
