@@ -2,7 +2,6 @@ package tachyonauth
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"log"
 	"os"
@@ -24,7 +23,7 @@ type Client struct {
 	config     *config.Config
 }
 
-func New(config *config.Config) (*Client, error) {
+func New(cfg *config.Config) (*Client, error) {
 	cc := new(Client)
 	//defer conn.Close()
 	conn, err := newConnnection()
@@ -32,10 +31,10 @@ func New(config *config.Config) (*Client, error) {
 		return nil, err
 	}
 	cc.connection = authpb.NewAuthorityApiClient(conn)
-	if config.AppID == "" || config.ProjectID == "" {
-		return nil, errors.New("appID and ProjectID cannot be empty")
+	cc.config, err = config.New(cfg.ProjectID, cfg.AppID)
+	if err != nil {
+		return nil, err
 	}
-	cc.config = config
 	return cc, nil
 }
 
