@@ -3,9 +3,16 @@ package tachyonauth
 import (
 	"context"
 	"testing"
+
+	"github.com/golang/mock/gomock"
+	authpb "github.com/quantum-box/tachyon-sdk-go/service/auth/proto"
+	mock_authpb "github.com/quantum-box/tachyon-sdk-go/service/auth/proto/mock_authority_grpc"
+	"github.com/quantum-box/tachyon-sdk-go/tachyon"
 )
 
 func TestClient_Verify(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	mockClient := mock_authpb.NewMockAuthorityApiClient(ctrl)
 	type fields struct {
 		connection authpb.AuthorityApiClient
 		config     *tachyon.Config
@@ -20,7 +27,12 @@ func TestClient_Verify(t *testing.T) {
 		args    args
 		wantErr bool
 	}{
-		// TODO: Add test cases.
+		{
+			name:    "unittest success",
+			fields:  fields{mockClient, &tachyon.Config{}},
+			args:    args{context.Background(), ""},
+			wantErr: false,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
