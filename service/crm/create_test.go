@@ -37,8 +37,22 @@ func TestClient_Create(t *testing.T) {
 		args    args
 		wantErr bool
 	}{
+		/*
+			{
+				name: "mocktest",
+				fields: fields{
+					conn.connection,
+					nil,
+				},
+				args: args{
+					ctx: context.Background(),
+					in:  &CustomerDto{},
+				},
+				wantErr: false,
+			},
+		*/
 		{
-			name: "unittest create returns ok",
+			name: "integrationtest",
 			fields: fields{
 				conn.connection,
 				nil,
