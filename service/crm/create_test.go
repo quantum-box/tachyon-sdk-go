@@ -3,7 +3,9 @@ package tachyoncrm
 import (
 	"context"
 	"testing"
+	"time"
 
+	tachyonid "github.com/quantum-box/tachyon-sdk-go/internal/id"
 	crmpb "github.com/quantum-box/tachyon-sdk-go/service/crm/proto"
 	"github.com/quantum-box/tachyon-sdk-go/tachyon"
 	"google.golang.org/grpc"
@@ -43,7 +45,10 @@ func TestClient_Create(t *testing.T) {
 			},
 			args: args{
 				ctx: context.Background(),
-				in:  &CustomerDto{},
+				in: &CustomerDto{
+					ID:           tachyonid.NewUlID(),
+					RegisteredAt: time.Now(),
+				},
 			},
 			wantErr: false,
 		},
