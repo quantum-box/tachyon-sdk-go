@@ -46,8 +46,9 @@ func TestClient_Create(t *testing.T) {
 			args: args{
 				ctx: context.Background(),
 				in: &CustomerDto{
-					ID:           tachyonid.NewUlID(),
-					RegisteredAt: time.Now(),
+					ID:             tachyonid.NewUlID(),
+					RegisteredAt:   time.Now(),
+					LastSignedInAt: time.Now(),
 				},
 			},
 			wantErr: false,
