@@ -37,20 +37,22 @@ func TestClient_Create(t *testing.T) {
 		args    args
 		wantErr bool
 	}{
-		/*
-			{
-				name: "mocktest",
-				fields: fields{
-					conn.connection,
-					nil,
-				},
-				args: args{
-					ctx: context.Background(),
-					in:  &CustomerDto{},
-				},
-				wantErr: false,
+		{
+			name: "unittest",
+			fields: fields{
+				&crmApiClientMock{},
+				nil,
 			},
-		*/
+			args: args{
+				ctx: context.Background(),
+				in: &CustomerDto{
+					ID:             tachyonid.NewUlID(),
+					RegisteredAt:   time.Now(),
+					LastSignedInAt: time.Now(),
+				},
+			},
+			wantErr: false,
+		},
 		{
 			name: "integrationtest",
 			fields: fields{
