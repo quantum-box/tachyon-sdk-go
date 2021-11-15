@@ -1,0 +1,1 @@
+go test ./service/crm/... -count=1

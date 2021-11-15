@@ -1,0 +1,19 @@
+syntax = "proto3";
+package crm;
+
+option go_package = "github.com/quantum-box/tachyon-go-sdk/service/crm/crmpb";
+
+service CrmApi { rpc Create(CreateRequest) returns (CreateResponse); }
+
+message CreateRequest {
+  string aggregationName = 1;
+  optional RawCustomer rawCustomer = 2;
+}
+
+message CreateResponse { string id = 1; }
+
+message RawCustomer {
+  string id = 1;
+  string registered_at = 2;
+  string last_signed_in_at = 3;
+}
