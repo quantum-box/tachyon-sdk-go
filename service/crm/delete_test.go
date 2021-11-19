@@ -4,6 +4,7 @@ import (
 	"context"
 	"testing"
 
+	tachyonid "github.com/quantum-box/tachyon-sdk-go/internal/id"
 	crmpb "github.com/quantum-box/tachyon-sdk-go/service/crm/proto"
 	"github.com/quantum-box/tachyon-sdk-go/tachyon"
 )
@@ -24,8 +25,21 @@ func TestClient_Delete(t *testing.T) {
 		args    args
 		wantErr bool
 	}{
-		// TODO: Add test cases.
+		{
+			name: "unittest",
+			fields: fields{
+				&crmApiClientMock{},
+				nil,
+			},
+			args: args{
+				ctx:             context.Background(),
+				aggregationName: "unittest",
+				id:              tachyonid.NewUlID(),
+			},
+			wantErr: false,
+		},
 	}
+
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			c := &Client{
