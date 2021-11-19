@@ -17,6 +17,12 @@ type crmApiClientMock struct {
 func (c *crmApiClientMock) Create(ctx context.Context, in *crmpb.CreateRequest, opts ...grpc.CallOption) (*crmpb.CreateResponse, error) {
 	return nil, nil
 }
+func (c *crmApiClientMock) Update(ctx context.Context, in *crmpb.UpdateRequest, opts ...grpc.CallOption) (*crmpb.UpdateResponse, error) {
+	return nil, nil
+}
+func (c *crmApiClientMock) Delete(ctx context.Context, in *crmpb.DeleteRequest, opts ...grpc.CallOption) (*crmpb.DeleteResponse, error) {
+	return nil, nil
+}
 
 func TestClient_Create(t *testing.T) {
 	conn, err := NewCrmClient()

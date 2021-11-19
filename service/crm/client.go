@@ -6,13 +6,17 @@ import (
 	"log"
 	"os"
 
+	myContext "github.com/quantum-box/tachyon-sdk-go/internal/context"
 	crmpb "github.com/quantum-box/tachyon-sdk-go/service/crm/proto"
 	"github.com/quantum-box/tachyon-sdk-go/tachyon"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/metadata"
 )
 
 type TachyonCrmDriver interface {
 	Create(ctx context.Context, in *CustomerDto) error
+	Update(ctx context.Context, in *CustomerDto) error
+	Delete(ctx context.Context, aggregationName, id string) error
 }
 
 var _ TachyonCrmDriver = &Client{}
@@ -43,4 +47,17 @@ func newConnnection() (*grpc.ClientConn, error) {
 		return nil, fmt.Errorf("ConnectionFailureErr:%v", err)
 	}
 	return conn, nil
+}
+
+func (c *Client) withConfig(ctx context.Context) (context.Context, error) {
+	token, err := myContext.CurrentAuthzToken(ctx)
+	if err != nil {
+		return nil, err
+	}
+	md := metadata.New(map[string]string{
+		"authorization": token,
+		"project_id":    c.config.ProjectID,
+		"app_id":        c.config.AppID,
+	})
+	return metadata.NewOutgoingContext(ctx, md), nil
 }
