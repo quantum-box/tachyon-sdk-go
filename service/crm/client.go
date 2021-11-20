@@ -2,6 +2,7 @@ package tachyoncrm
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"log"
 	"os"
@@ -26,13 +27,17 @@ type Client struct {
 	config     *tachyon.Config
 }
 
-func NewCrmClient() (*Client, error) {
+func NewCrmClient(config *tachyon.Config) (*Client, error) {
 	cc := new(Client)
 	conn, err := newConnnection()
 	if err != nil {
 		return nil, err
 	}
 	cc.connection = crmpb.NewCrmApiClient(conn)
+	if config.AppID == "" || config.ProjectID == "" {
+		return nil, errors.New("appID and ProjectID cannot be empty")
+	}
+	cc.config = config
 	return cc, nil
 }
 

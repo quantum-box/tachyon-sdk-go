@@ -25,7 +25,10 @@ func (c *crmApiClientMock) Delete(ctx context.Context, in *crmpb.DeleteRequest, 
 }
 
 func TestClient_Create(t *testing.T) {
-	conn, err := NewCrmClient()
+	client, err := NewCrmClient(&tachyon.Config{
+		AppID:     "01FKXKS0VVMZS86G1P7A5NNH5H",
+		ProjectID: "01FKXKQTWW7HNYQ8D5PFXC693D",
+	})
 	if err != nil {
 		t.Error(err)
 	}
@@ -62,7 +65,7 @@ func TestClient_Create(t *testing.T) {
 		{
 			name: "integrationtest",
 			fields: fields{
-				conn.connection,
+				client.connection,
 				nil,
 			},
 			args: args{
