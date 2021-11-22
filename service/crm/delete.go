@@ -7,11 +7,10 @@ import (
 )
 
 func (c *Client) Delete(ctx context.Context, aggregationName, id string) error {
-	/*ctx, err := c.withConfig(ctx)
+	ctx, err := c.withConfig(ctx)
 	if err != nil {
 		return err
 	}
-	*/
 	if _, err := c.connection.Delete(ctx, &cmspb.DeleteRequest{
 		Id:              id,
 		AggregationName: aggregationName,

@@ -66,7 +66,7 @@ func TestClient_Create(t *testing.T) {
 			name: "integrationtest",
 			fields: fields{
 				client.connection,
-				nil,
+				client.config,
 			},
 			args: args{
 				ctx: context.Background(),
