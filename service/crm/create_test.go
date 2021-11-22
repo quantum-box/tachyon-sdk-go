@@ -17,9 +17,18 @@ type crmApiClientMock struct {
 func (c *crmApiClientMock) Create(ctx context.Context, in *crmpb.CreateRequest, opts ...grpc.CallOption) (*crmpb.CreateResponse, error) {
 	return nil, nil
 }
+func (c *crmApiClientMock) Update(ctx context.Context, in *crmpb.UpdateRequest, opts ...grpc.CallOption) (*crmpb.UpdateResponse, error) {
+	return nil, nil
+}
+func (c *crmApiClientMock) Delete(ctx context.Context, in *crmpb.DeleteRequest, opts ...grpc.CallOption) (*crmpb.DeleteResponse, error) {
+	return nil, nil
+}
 
 func TestClient_Create(t *testing.T) {
-	conn, err := NewCrmClient()
+	client, err := NewCrmClient(&tachyon.Config{
+		AppID:     "01FKXKS0VVMZS86G1P7A5NNH5H",
+		ProjectID: "01FKXKQTWW7HNYQ8D5PFXC693D",
+	})
 	if err != nil {
 		t.Error(err)
 	}
@@ -56,8 +65,8 @@ func TestClient_Create(t *testing.T) {
 		{
 			name: "integrationtest",
 			fields: fields{
-				conn.connection,
-				nil,
+				client.connection,
+				client.config,
 			},
 			args: args{
 				ctx: context.Background(),
