@@ -35,17 +35,30 @@ func TestClient_Delete(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name: "unittest",
+			name: "mocktest",
+			fields: fields{
+				&crmApiClientMock{},
+				client.config,
+			},
+			args: args{
+				ctx:             ctx,
+				aggregationName: "mocktest",
+				id:              tachyonid.NewUlID(),
+			},
+			wantErr: false,
+		},
+		{
+			name: "integrationtest",
 			fields: fields{
 				client.connection,
 				client.config,
 			},
 			args: args{
 				ctx:             ctx,
-				aggregationName: "unittest",
+				aggregationName: "integrationtest",
 				id:              tachyonid.NewUlID(),
 			},
-			wantErr: false,
+			wantErr: true,
 		},
 	}
 
