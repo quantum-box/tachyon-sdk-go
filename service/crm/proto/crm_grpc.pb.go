@@ -18,6 +18,7 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type CrmApiClient interface {
+	GetByMail(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetResponse, error)
 	Create(ctx context.Context, in *CreateRequest, opts ...grpc.CallOption) (*CreateResponse, error)
 	Update(ctx context.Context, in *UpdateRequest, opts ...grpc.CallOption) (*UpdateResponse, error)
 	Delete(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*DeleteResponse, error)
@@ -29,6 +30,15 @@ type crmApiClient struct {
 
 func NewCrmApiClient(cc grpc.ClientConnInterface) CrmApiClient {
 	return &crmApiClient{cc}
+}
+
+func (c *crmApiClient) GetByMail(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetResponse, error) {
+	out := new(GetResponse)
+	err := c.cc.Invoke(ctx, "/crm.CrmApi/GetByMail", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *crmApiClient) Create(ctx context.Context, in *CreateRequest, opts ...grpc.CallOption) (*CreateResponse, error) {
@@ -62,6 +72,7 @@ func (c *crmApiClient) Delete(ctx context.Context, in *DeleteRequest, opts ...gr
 // All implementations must embed UnimplementedCrmApiServer
 // for forward compatibility
 type CrmApiServer interface {
+	GetByMail(context.Context, *GetRequest) (*GetResponse, error)
 	Create(context.Context, *CreateRequest) (*CreateResponse, error)
 	Update(context.Context, *UpdateRequest) (*UpdateResponse, error)
 	Delete(context.Context, *DeleteRequest) (*DeleteResponse, error)
@@ -72,6 +83,9 @@ type CrmApiServer interface {
 type UnimplementedCrmApiServer struct {
 }
 
+func (UnimplementedCrmApiServer) GetByMail(context.Context, *GetRequest) (*GetResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetByMail not implemented")
+}
 func (UnimplementedCrmApiServer) Create(context.Context, *CreateRequest) (*CreateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Create not implemented")
 }
@@ -92,6 +106,24 @@ type UnsafeCrmApiServer interface {
 
 func RegisterCrmApiServer(s grpc.ServiceRegistrar, srv CrmApiServer) {
 	s.RegisterService(&CrmApi_ServiceDesc, srv)
+}
+
+func _CrmApi_GetByMail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CrmApiServer).GetByMail(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/crm.CrmApi/GetByMail",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CrmApiServer).GetByMail(ctx, req.(*GetRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _CrmApi_Create_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -155,6 +187,10 @@ var CrmApi_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "crm.CrmApi",
 	HandlerType: (*CrmApiServer)(nil),
 	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "GetByMail",
+			Handler:    _CrmApi_GetByMail_Handler,
+		},
 		{
 			MethodName: "Create",
 			Handler:    _CrmApi_Create_Handler,
