@@ -15,7 +15,7 @@ import (
 )
 
 type TachyonCrmDriver interface {
-	GetByMail(ctx context.Context, aggregationName, mail string) error
+	GetByMail(ctx context.Context, aggregationName, mail string) (*CustomerDto, error)
 	Create(ctx context.Context, in *CustomerDto) error
 	Update(ctx context.Context, in *CustomerDto) error
 	Delete(ctx context.Context, aggregationName, id string) error
