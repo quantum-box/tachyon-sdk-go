@@ -35,7 +35,6 @@ func fromGetResponse(in *crmpb.GetResponse) (*CustomerDto, error) {
 		ID:             in.RawCustomer.Id,
 		RegisteredAt:   registeredAt,
 		LastSignedInAt: lastSignedInAt,
-		//ここoptionだけど大丈夫かな？？？
-		Mail: in.RawCustomer.Mail,
+		Mail:           in.RawCustomer.Mail,
 	}, nil
 }
