@@ -14,7 +14,7 @@ import (
 type crmApiClientMock struct {
 }
 
-func (c *crmApiClientMock) GetByMail(ctx context.Context, in *crmpb.GetRequest, opts ...grpc.CallOption) (*crmpb.GetResponse, error) {
+func (c *crmApiClientMock) GetByMail(ctx context.Context, in *crmpb.GetByMailRequest, opts ...grpc.CallOption) (*crmpb.GetByMailResponse, error) {
 	return nil, nil
 }
 func (c *crmApiClientMock) Create(ctx context.Context, in *crmpb.CreateRequest, opts ...grpc.CallOption) (*crmpb.CreateResponse, error) {

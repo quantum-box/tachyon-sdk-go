@@ -12,7 +12,7 @@ func (c *Client) GetByMail(ctx context.Context, aggregationName, mail string) (*
 	if err != nil {
 		return nil, err
 	}
-	res, err := c.connection.GetByMail(ctx, &crmpb.GetRequest{
+	res, err := c.connection.GetByMail(ctx, &crmpb.GetByMailRequest{
 		AggregationName: aggregationName,
 		Mail:            mail,
 	})
@@ -22,7 +22,7 @@ func (c *Client) GetByMail(ctx context.Context, aggregationName, mail string) (*
 	return fromGetResponse(res)
 }
 
-func fromGetResponse(in *crmpb.GetResponse) (*CustomerDto, error) {
+func fromGetResponse(in *crmpb.GetByMailResponse) (*CustomerDto, error) {
 	registeredAt, err := time.Parse(time.RFC3339, in.RawCustomer.RegisteredAt)
 	if err != nil {
 		return nil, err
@@ -36,5 +36,6 @@ func fromGetResponse(in *crmpb.GetResponse) (*CustomerDto, error) {
 		RegisteredAt:   registeredAt,
 		LastSignedInAt: lastSignedInAt,
 		Mail:           in.RawCustomer.Mail,
+		Name:           in.RawCustomer.Name,
 	}, nil
 }

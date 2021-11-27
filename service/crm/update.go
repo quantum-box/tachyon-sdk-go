@@ -27,6 +27,8 @@ func fromCustomerUpdate(in *CustomerDto) *crmpb.UpdateRequest {
 			Id:             in.ID,
 			RegisteredAt:   in.RegisteredAt.Format(time.RFC3339),
 			LastSignedInAt: in.LastSignedInAt.Format(time.RFC3339),
+			Mail:           in.Mail,
+			Name:           in.Name,
 		},
 	}
 }
