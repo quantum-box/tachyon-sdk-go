@@ -4,7 +4,7 @@ package crm;
 option go_package = "github.com/quantum-box/tachyon-go-sdk/service/crm/crmpb";
 
 service CrmApi {
-  rpc GetByMail(GetRequest) returns (GetResponse);
+  rpc GetByMail(GetByMailRequest) returns (GetByMailResponse);
   rpc Create(CreateRequest) returns (CreateResponse);
   rpc Update(UpdateRequest) returns (UpdateResponse);
   rpc Delete(DeleteRequest) returns (DeleteResponse);
@@ -29,11 +29,11 @@ message DeleteRequest {
 }
 message DeleteResponse { string id = 1; }
 
-message GetRequest {
+message GetByMailRequest {
   string aggregationName = 1;
   string mail = 2;
 }
-message GetResponse {
+message GetByMailResponse {
   string aggregationName = 1;
   optional RawCustomer rawCustomer = 2;
 }
@@ -43,4 +43,5 @@ message RawCustomer {
   string registered_at = 2;
   string last_signed_in_at = 3;
   optional string mail = 4;
+  optional string name = 5;
 }

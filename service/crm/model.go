@@ -7,4 +7,5 @@ type CustomerDto struct {
 	RegisteredAt   time.Time
 	LastSignedInAt time.Time
 	Mail           *string
+	Name           *string
 }

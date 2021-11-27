@@ -23,6 +23,8 @@ func fromCustomerDto(in *CustomerDto) *crmpb.CreateRequest {
 			Id:             in.ID,
 			RegisteredAt:   in.RegisteredAt.Format(time.RFC3339),
 			LastSignedInAt: in.LastSignedInAt.Format(time.RFC3339),
+			Name:           in.Name,
+			Mail:           in.Mail,
 		},
 	}
 }
